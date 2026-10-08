@@ -3,11 +3,11 @@ package ru.gr0550x;
 import java.util.List;
 
 public interface TaskFormView {
-    String getTitle();
+    String getTaskTitle();
     String getDeadline();
     String getPriority();
 
     void clearForm();
-    void showTask(List<Task> tasks);
+    void showTasks(List<Task> tasks);
     void render(TaskFormState state);
 }

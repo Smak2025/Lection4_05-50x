@@ -15,16 +15,38 @@ public class TaskFormPresenter {
     public void saveClicked(){
         try {
             service.createTask(
-                    view.getTitle(),
+                    view.getTaskTitle(),
                     view.getDeadline(),
                     view.getPriority()
             );
             var tasks = service.getAllTasks();
-            view.showTask(tasks);
+            view.showTasks(tasks);
             view.clearForm();
             view.render(TaskFormState.setSaved(tasks.size()));
         } catch (IllegalArgumentException ex){
             view.render(TaskFormState.setError(ex.getMessage()));
         }
+    }
+
+    public void viewOpened(){
+        view.showTasks(service.getAllTasks());
+        view.render(TaskFormState.init());
+    }
+
+    public void inputChanged(){
+        if (isSaveAllowed()){
+            view.render(TaskFormState.setReady());
+        } else {
+            view.render(TaskFormState.init());
+        }
+    }
+
+    public boolean isSaveAllowed(){
+        return isNotBlank(view.getTaskTitle())
+                && isNotBlank(view.getDeadline());
+    }
+
+    private boolean isNotBlank(String value){
+        return value != null && !value.isBlank();
     }
 }
